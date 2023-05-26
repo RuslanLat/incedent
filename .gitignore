@@ -1,0 +1,6 @@
+.ipynb_checkpoints/
+/storage/pgdata/
+/venv/*
+/data/*
+/raw_data/*
+.env
