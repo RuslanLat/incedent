@@ -3,16 +3,19 @@
 FROM python:3.11
 
 # 
-WORKDIR /code
+COPY requirements.txt app/requirements.txt
+
+#
+WORKDIR /app
 
 # 
-COPY ./requirements.txt /code/requirements.txt
+RUN pip install -r requirements.txt
 
 # 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+COPY . /app
+
+#
+EXPOSE 8000
 
 # 
-COPY ./app /code/app
-
-# 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "app.api:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

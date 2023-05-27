@@ -1,0 +1,48 @@
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 5981:5981
+    environment:
+        - PORT=5981
+    networks:
+      - deploy_network
+    depends_on:
+      - api
+      - db
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    ports:
+      - 8000:8000
+    networks:
+      - deploy_network
+
+  db:
+      image: postgres:13.3
+      volumes:
+        - .:/var/lib/postgresql/data/
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=incident
+        - PGDATA=/var/lib/postgresql/data/pgdata
+      ports:
+        - 5432:5432
+      networks:
+        - deploy_network
+
+volumes:
+  pgdata:
+    
+networks:
+  deploy_network:
+    driver: bridge
