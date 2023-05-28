@@ -83,6 +83,8 @@ if authentication_status:
     def data_upload():
         df = pd.read_csv("df_web.csv")
         return df
+    
+    df = data_upload()
 
     if selected == "Задача":
         st.subheader(""" Задча 10: "Сервис прогнозирования работ по содержанию и ремонту объектов городского хозяйства" """)
@@ -108,7 +110,7 @@ if authentication_status:
         # Data
         if oprions == "База данных":
             
-            df = data_upload()
+            
 
             st.subheader("Предлагаемый план работ")
 
@@ -137,7 +139,6 @@ if authentication_status:
             
         if oprions == "Пользовательский ввод":
 
-            df = data_upload()
             st.subheader("Выбирете параметры")
             source_list = st.selectbox(
             'Выбирете источник', df.iloc[:,0].unique())
