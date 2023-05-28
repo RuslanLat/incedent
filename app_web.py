@@ -24,6 +24,13 @@ col2.markdown("""<h6>ДЕПАРТАМЕНТ ЖИЛИЩНО-КОММУНАЛЬН�
 col2.markdown("<p style='text-align: center; color: blac;'> Сервис прогнозирования работ<br>по содержанию и ремонту объектов городского хозяйства </p>", unsafe_allow_html=True)
 
 
+@st.cache_data
+def data_upload():
+    df = pd.read_csv("df_web.csv")
+    return df
+
+df = data_upload()
+
 # --- USER AUTHENTICATION ---
 names = ["Admin Name", "User Name"]
 usernames = ["admin", "user"]
@@ -79,12 +86,7 @@ if authentication_status:
 
     # Functions
 
-    @st.cache_data
-    def data_upload():
-        df = pd.read_csv("df_web.csv")
-        return df
     
-    df = data_upload()
 
     if selected == "Задача":
         st.subheader(""" Задча 10: "Сервис прогнозирования работ по содержанию и ремонту объектов городского хозяйства" """)
