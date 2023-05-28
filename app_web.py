@@ -81,7 +81,7 @@ if authentication_status:
 
     @st.cache_data
     def data_upload():
-        df = pd.read_csv("data/df_web.csv")
+        df = pd.read_csv("df_web.csv")
         return df
 
     if selected == "Задача":
