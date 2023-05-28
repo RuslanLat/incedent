@@ -79,7 +79,7 @@ if authentication_status:
 
     # Functions
 
-    @st.cache
+    @st.cache_data
     def data_upload():
         df = pd.read_csv("df_web.csv")
         return df
