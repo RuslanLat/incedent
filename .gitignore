@@ -3,6 +3,5 @@
 /venv/*
 /data/*
 /raw_data/*
-.env
 __pycache__/
 *.py[cod]
