@@ -64,5 +64,5 @@ def load_train():
     "Количество пассажирских лифтов",
     "Количество грузопассажирских лифтов", "Статус МКД",
     "Количество грузовых лифтов"] 
-    df = pd.DataFrame(train_data, columns=colnames)
+    df = pd.DataFrame(train_data) #, columns=colnames
     return df.to_dict()
