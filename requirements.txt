@@ -2,7 +2,7 @@ streamlit
 streamlit_option_menu
 streamlit_authenticator
 streamlit-aggrid
-psycopg2:bin
+psycopg2-binary
 fastapi[all]
 pony
 python-dotenv
