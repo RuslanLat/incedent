@@ -4,3 +4,7 @@ streamlit_authenticator
 streamlit-aggrid
 psycopg2
 fastapi[all]
+pony
+python-dotenv
+python-docx
+openpyxl
