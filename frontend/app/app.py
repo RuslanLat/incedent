@@ -104,7 +104,7 @@ if authentication_status:
             AG_CRID_LOCALE_RU = json.load(f)
 
         oprions = st.selectbox("Выбирите способ загрузки файла", 
-                          ("База данных", "Пользовательский ввод", "API"))
+                          ("База данных", "Пользовательский ввод"))
         
         # Data
         if oprions == "База данных":
@@ -141,13 +141,13 @@ if authentication_status:
             df = data_upload()
             st.subheader("Выбирете параметры")
             source_list = st.selectbox(
-            'Выбирете источник', df.iloc[:,1].unique())
+            'Выбирете источник', df.iloc[:,0].unique())
             year_list = st.selectbox(
             'Выбирете год постройки', df.iloc[:,2].unique())
             project_list = st.selectbox(
             'Выбирете серию проекта', df.iloc[:,3].unique())
             
-            index_list = np.where((df.iloc[:,1] == source_list) &
+            index_list = np.where((df.iloc[:,0] == source_list) &
                     (df.iloc[:,2]== year_list) &
                     (df.iloc[:,3] == project_list))
             
@@ -176,11 +176,11 @@ if authentication_status:
                                 update_mode=GridUpdateMode.SELECTION_CHANGED,
                                 allow_unsafe_jscode=True,
                                 theme="alpine")
-        if oprions == "API":
-            api_get = st.button("Загрузка данных по API")
-            if api_get:
-                res = requests.post(url = "http://api:8000/items/data")
-                st.write(res.json())
+        #if oprions == "API":
+        #    api_get = st.button("Загрузка данных по API")
+        #    if api_get:
+        #        res = requests.post(url = "http://api:8000/items/{data}", data="data")
+        #        st.write(res.json())
 
     if selected == "О приложении":
 
