@@ -177,7 +177,8 @@ if authentication_status:
                                 allow_unsafe_jscode=True,
                                 theme="alpine")
         if oprions == "API":
-            res = requests.post(url = "http://api:8000/items/{item_id}",)
+            st.button("Загрузка данных по API")
+            res = requests.post(url = "http://api:8000/items/data")
             st.write(res.json())
 
     if selected == "О приложении":

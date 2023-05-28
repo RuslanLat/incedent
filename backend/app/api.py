@@ -1,4 +1,3 @@
-from typing import Union
 from fastapi import FastAPI
 import psycopg2
 import pandas as pd
@@ -15,15 +14,14 @@ DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 app = FastAPI()
 
-# создание подключения к базе данны
-connect = psycopg2.connect(database=DB_NAME,
-                           user=DB_USER,
-                           password=DB_PASSWORD,
-                           host=DB_HOST,
-                           port=DB_PORT)
 
-# создание объекта курсора подключения к базе данных
+connect = psycopg2.connect(database=DB_NAME,
+                            user=DB_USER,
+                            password=DB_PASSWORD,
+                            host=DB_HOST,
+                            port=DB_PORT)
 cursor = connect.cursor()
+
 
 @app.get("/")
 def read_root():
@@ -31,9 +29,9 @@ def read_root():
 
 
 @app.get("/items/{item_id}")
-def read_item(item_id: dict):
-    if item_id:
-        return {"item_id": item_id}
+def read_item(item_id):
+    if item_id != "data":
+        return item_id
     else:
         data = {"item_id": 
                     {"id" : 2,
@@ -51,18 +49,19 @@ def read_item(item_id: dict):
                     "cargo" : 0,
                     "status" : "в эксплуатации",
                     "freight" : 0}
-                }       
+                }
+        return data       
 
 @app.post("/train")
 def load_train():
     cursor.execute("""SELECT * FROM train;""")
     train_data = cursor.fetchall()
-    colnames = ["Источник", "Адрес", "Год постройки", "Серия проекта",
-    "Количество этажей", "Количество подъездов",
-    "Общая площадь", "Общая площадь жилых помещений",
-    "Общая площадь нежилых помещений", "Материал стен",
-    "Количество пассажирских лифтов",
-    "Количество грузопассажирских лифтов", "Статус МКД",
-    "Количество грузовых лифтов"] 
+    #colnames = ["Источник", "Адрес", "Год постройки", "Серия проекта",
+    #"Количество этажей", "Количество подъездов",
+    #"Общая площадь", "Общая площадь жилых помещений",
+    #"Общая площадь нежилых помещений", "Материал стен",
+    #"Количество пассажирских лифтов",
+    #"Количество грузопассажирских лифтов", "Статус МКД",
+    #"Количество грузовых лифтов"] 
     df = pd.DataFrame(train_data) #, columns=colnames
     return df.to_dict()
