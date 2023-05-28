@@ -5,9 +5,9 @@
 Задача №10 "Сервис прогнозирования работ по содержанию и ремонту объектов городского хозяйства"
 
 1. [Презентация](https://github.com/RuslanLat/incedent/blob/main/presentation.pdf)
-2. [WEB-приложение](https://incident.streamlit.app/)
+2. [WEB-приложение](https://incedent.streamlit.app/)
 
-![web](https://github.com/RuslanLat/green/blob/main/images/web.png)
+![web](https://github.com/RuslanLat/incedent/blob/main/images/web.png)
 
 
 Для локального использования WEB-приложения:

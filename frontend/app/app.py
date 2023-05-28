@@ -172,14 +172,15 @@ if authentication_status:
             gd.configure_selection(selection_mode="multiple", use_checkbox=True)
             gd.configure_grid_options(onRowSelected = js, pre_selected_rows = [])
             gridoptions = gd.build()
-            grid_table = AgGrid(вf_new, gridOptions=gridoptions,
+            grid_table = AgGrid(df_new, gridOptions=gridoptions,
                                 update_mode=GridUpdateMode.SELECTION_CHANGED,
                                 allow_unsafe_jscode=True,
                                 theme="alpine")
         if oprions == "API":
-            st.button("Загрузка данных по API")
-            res = requests.post(url = "http://api:8000/items/data")
-            st.write(res.json())
+            api_get = st.button("Загрузка данных по API")
+            if api_get:
+                res = requests.post(url = "http://api:8000/items/data")
+                st.write(res.json())
 
     if selected == "О приложении":
 
