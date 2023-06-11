@@ -8,3 +8,7 @@ pony
 python-dotenv
 python-docx
 openpyxl
+streamlit-folium
+folium
+catboost
+scikit-learn

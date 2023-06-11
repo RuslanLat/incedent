@@ -13,6 +13,9 @@ import os
 import numpy as np
 from pathlib import Path
 from PIL import Image
+import folium
+import branca
+from streamlit_folium import st_folium
 
 st.set_page_config(page_title="Департамент жилищно-коммунального хозяйства города Москвы",
                     page_icon="images/logo.ico",
@@ -20,16 +23,73 @@ st.set_page_config(page_title="Департамент жилищно-комму�
 
 col1, col2 = st.columns([1,5])
 col1.markdown("""<p><img src="https://www.mos.ru/upload/iblock/ace/ace3fe6203ace8dc07a6d2b7e1e592d2.png" width="80" height="90" align="middle" /> </p>""", unsafe_allow_html=True)    
-col2.markdown("""<h6>ДЕПАРТАМЕНТ ЖИЛИЩНО-КОММУНАЛЬНОГО ХОЗЯЙСТВА ГОРОДА МОСКВЫ</h6>""", unsafe_allow_html=True)
+col2.markdown("<p style='text-align: center; font-size:20px; color: blac;'><STRONG>ДЕПАРТАМЕНТ ЖИЛИЩНО-КОММУНАЛЬНОГО ХОЗЯЙСТВА ГОРОДА МОСКВЫ</STRONG></p>", unsafe_allow_html=True)
 col2.markdown("<p style='text-align: center; color: blac;'> Сервис прогнозирования работ<br>по содержанию и ремонту объектов городского хозяйства </p>", unsafe_allow_html=True)
 
 
 @st.cache_data
 def data_upload():
-    df = pd.read_csv("df_web.csv")
-    return df
+    df = pd.read_csv("data/addresses.csv")
+    return df[:100]
 
 df = data_upload()
+
+
+def popup_html(row):
+
+    i = row
+
+    SIMPLE_ADDRESS=df['SIMPLE_ADDRESS'].iloc[i]
+    ADM_AREA=df['ADM_AREA'].iloc[i]
+    DISTRICT = df['DISTRICT'].iloc[i]
+    unom=df['unom'].iloc[i]
+    
+    left_col_color = "#ff4040"
+    right_col_color = "#FFFAFA"
+
+
+    html = """<!DOCTYPE html><html>
+    <head>
+    <h4 style="margin-bottom:10"; width="200px">{}</h4>""".format(SIMPLE_ADDRESS) + """
+    
+    </head>
+        <table style="height: 126px; width: 350px;">
+    <tbody>
+    <tr>
+    <td style="background-color: """+ left_col_color +"""; text-align:center; border: 1px solid white;">Административный округ</td>
+    <td style="width: 150px;background-color: """+ left_col_color +"""; text-align:center; border: 1px solid white;">{}</td>""".format(ADM_AREA) + """
+    </tr>
+    <tr>
+    <td style="background-color: """+ right_col_color +"""; text-align:center; border: 1px solid white;">Административный район</td>
+    <td style="width: 150px;background-color: """+ right_col_color +"""; text-align:center; border: 1px solid white;">{}</td>""".format(DISTRICT) + """
+    </tr>
+    <tr>
+    <td style="background-color: """+ left_col_color +"""; text-align:center; border: 1px solid white;">id адреса</td>
+    <td style="width: 150px;background-color: """+ left_col_color +"""; text-align:center; border: 1px solid white;">{}</td>""".format(unom) + """
+    </tr>
+    </tbody>
+    </table>
+    </html> """
+    
+    return html
+
+
+location = df['LATITUDE'].mean(), df['LONGITUDE'].mean()
+#Specify the center of the map by using the average of latitude and longitude coordinates
+m = folium.Map(location=location,zoom_start=10)
+#Create a empty folium map object #Color code the markers to show blue markers for public universities and brown colors for private universities
+for i in range(0,len(df)):
+    institution_type = df['CONTROL'].iloc[i]
+    if institution_type == 0:
+        color = 'darkblue'
+    elif institution_type == 1:
+        color = 'lightbrown'
+    else: color = 'gray'
+    html = popup_html(i)
+    iframe = branca.element.IFrame(html=html,width=510,height=280)
+    popup = folium.Popup(folium.Html(html, script=True), max_width=500)
+    folium.Marker([df['LATITUDE'].iloc[i],df['LONGITUDE'].iloc[i]],
+    popup=popup, icon=folium.Icon(color=color, icon='home')).add_to(m)
 
 # --- USER AUTHENTICATION ---
 names = ["Admin Name", "User Name"]
@@ -138,6 +198,9 @@ if authentication_status:
                                 update_mode=GridUpdateMode.SELECTION_CHANGED,
                                 allow_unsafe_jscode=True,
                                 theme="alpine")
+                       
+            st.subheader("Предлагаемый план работ")
+            st_data = st_folium(m, width=1600)
             
         if oprions == "Пользовательский ввод":
 

@@ -2,3 +2,4 @@ fastapi[all]
 python-dotenv
 psycopg2
 pandas
+catboost

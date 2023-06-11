@@ -2,3 +2,7 @@ streamlit
 streamlit_option_menu
 streamlit_authenticator
 streamlit-aggrid
+folium
+streamlit-folium
+catboost
+openpyxl
